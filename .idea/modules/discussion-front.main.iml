@@ -2,15 +2,11 @@
 <module version="4">
   <component name="FacetManager">
     <facet type="kotlin-language" name="Kotlin">
-      <configuration version="3" platform="JavaScript " allPlatforms="JS []" useProjectSettings="false" isTestModule="true" externalProjectId="discussion-front" pureKotlinSourceFolders="$MODULE_DIR$/../../src/test/kotlin;/Users/kamikaze/workspace/IdeaProjects/discussion-front/src/main/kotlin">
-        <sourceSets>
-          <sourceSet>discussion-front.main~1</sourceSet>
-        </sourceSets>
+      <configuration version="3" platform="JavaScript " allPlatforms="JS []" useProjectSettings="false" isTestModule="false" externalProjectId="discussion-front" pureKotlinSourceFolders="$MODULE_DIR$/../../src/test/kotlin;/Users/kamikaze/workspace/IdeaProjects/discussion-front/src/main/kotlin">
         <newMppModelJpsModuleKind>COMPILATION_AND_SOURCE_SET_HOLDER</newMppModelJpsModuleKind>
-        <externalSystemTestTasks>browserTest|discussion-front:test|Js</externalSystemTestTasks>
         <compilerSettings />
         <compilerArguments>
-          <option name="outputFile" value="$MODULE_DIR$/../../build/js/packages/discussion-front-test/kotlin/discussion-front-test.js" />
+          <option name="outputFile" value="$MODULE_DIR$/../../build/js/packages/discussion-front/kotlin/discussion-front.js" />
           <option name="noStdlib" value="true" />
           <option name="sourceMap" value="true" />
           <option name="metaInfo" value="true" />
@@ -23,7 +19,9 @@
             <array />
           </option>
           <option name="pluginClasspaths">
-            <array />
+            <array>
+              <option value="$KOTLIN_BUNDLED$/lib/kotlinx-serialization-compiler-plugin.jar" />
+            </array>
           </option>
           <option name="multiPlatform" value="true" />
           <option name="errors">

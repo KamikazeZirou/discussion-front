@@ -1,6 +1,8 @@
+import component.issueList
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.await
 import kotlinx.coroutines.launch
+import kotlinx.serialization.UnstableDefault
 import org.w3c.fetch.CORS
 import org.w3c.fetch.RequestInit
 import org.w3c.fetch.RequestMode
@@ -8,6 +10,7 @@ import react.*
 import react.dom.div
 import kotlin.browser.window
 
+@UnstableDefault
 class App : RComponent<RProps, AppState>() {
     override fun AppState.init() {
         val mainScope = MainScope()
@@ -23,6 +26,7 @@ class App : RComponent<RProps, AppState>() {
         div {
             +(state.status ?: "Checking...")
         }
+        issueList {}
     }
 
     private suspend fun checkHealth(): String {

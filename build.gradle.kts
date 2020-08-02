@@ -1,5 +1,8 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     id("org.jetbrains.kotlin.js") version Versions.kotlin
+    kotlin("plugin.serialization") version Versions.kotlin
 }
 
 group = "com.simple.discussion"
@@ -9,6 +12,12 @@ repositories {
     maven("https://kotlin.bintray.com/kotlin-js-wrappers/")
     mavenCentral()
     jcenter()
+}
+
+tasks.withType<KotlinCompile>().all {
+    kotlinOptions {
+        freeCompilerArgs = freeCompilerArgs + "-Xopt-in=kotlin.RequiresOptIn"
+    }
 }
 
 dependencies {
@@ -27,6 +36,10 @@ dependencies {
 
     // Coroutines
     implementation(Deps.Kotlin.Coroutines)
+
+    // Serialization
+    implementation(Deps.Kotlin.Stdlib)
+    implementation(Deps.Serialization.Runtime)
 }
 
 kotlin.target.browser { }
