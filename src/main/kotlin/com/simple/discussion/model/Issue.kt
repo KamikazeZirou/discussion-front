@@ -1,4 +1,4 @@
-package model
+package com.simple.discussion.model
 
 import kotlinx.serialization.Serializable
 

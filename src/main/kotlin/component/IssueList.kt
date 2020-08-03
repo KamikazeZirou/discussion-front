@@ -1,5 +1,6 @@
 package component
 
+import com.simple.discussion.model.Issue
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.await
 import kotlinx.coroutines.coroutineScope
@@ -8,7 +9,6 @@ import kotlinx.serialization.ImplicitReflectionSerializer
 import kotlinx.serialization.UnstableDefault
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.parseList
-import model.Issue
 import org.w3c.fetch.CORS
 import org.w3c.fetch.RequestInit
 import org.w3c.fetch.RequestMode
