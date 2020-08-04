@@ -1,10 +1,14 @@
+import com.simple.discussion.model.Issue
 import component.issueForm
 import component.issueList
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.await
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.serialization.ImplicitReflectionSerializer
 import kotlinx.serialization.UnstableDefault
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.parseList
 import org.w3c.fetch.CORS
 import org.w3c.fetch.RequestInit
 import org.w3c.fetch.RequestMode
@@ -17,11 +21,20 @@ import kotlin.browser.window
 class App : RComponent<RProps, AppState>() {
     override fun AppState.init() {
         status = "Checking ..."
+        issues = listOf()
+
         val mainScope = MainScope()
         mainScope.launch {
             val status = checkHealth()
             setState {
                 this.status = status
+            }
+        }
+
+        mainScope.launch {
+            val fetchedIssues = fetchIssues()
+            setState {
+                this.issues = fetchedIssues
             }
         }
     }
@@ -31,12 +44,30 @@ class App : RComponent<RProps, AppState>() {
             +state.status
         }
         issueList {
+            issues = state.issues
         }
         issueForm {
             onPosted = {
-                // TODO issueListを更新する
+                MainScope().launch {
+                    val fetchedIssues = fetchIssues()
+                    setState {
+                        this.issues = fetchedIssues
+                    }
+                }
             }
         }
+    }
+
+    private suspend fun fetchIssues(): List<Issue> = coroutineScope {
+        val jsonString = window
+            .fetch(
+                "http://localhost:8080/issues",
+                RequestInit(mode = RequestMode.CORS)
+            )
+            .await()
+            .text()
+            .await()
+        Json.parseList<Issue>(jsonString)
     }
 
     private suspend fun checkHealth(): String {
@@ -53,5 +84,6 @@ class App : RComponent<RProps, AppState>() {
 
 external interface AppState : RState {
     var status: String
+    var issues: List<Issue>
 }
 

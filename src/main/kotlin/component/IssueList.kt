@@ -1,65 +1,31 @@
 package component
 
 import com.simple.discussion.model.Issue
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.await
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 import kotlinx.serialization.ImplicitReflectionSerializer
 import kotlinx.serialization.UnstableDefault
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.parseList
-import org.w3c.fetch.CORS
-import org.w3c.fetch.RequestInit
-import org.w3c.fetch.RequestMode
 import react.*
 import react.dom.div
-import kotlin.browser.window
 
 @UnstableDefault
 @OptIn(ImplicitReflectionSerializer::class)
-class IssueList : RComponent<RProps, IssueListState>() {
-    override fun IssueListState.init() {
-        issues = listOf()
-
-        val mainScope = MainScope()
-        mainScope.launch {
-            val issues = fetchIssues()
-            setState {
-                this.issues = issues
-            }
-        }
-    }
-
+class IssueList : RComponent<IssueListProps, RState>() {
     override fun RBuilder.render() {
-        state.issues.forEach { issue ->
+        props.issues.forEach { issue ->
             div {
-                +issue.title
+                +"${issue.title}, ${issue.description}"
             }
         }
-    }
-
-    private suspend fun fetchIssues(): List<Issue> = coroutineScope {
-        val jsonString = window
-            .fetch(
-                "http://localhost:8080/issues",
-                RequestInit(mode = RequestMode.CORS)
-            )
-            .await()
-            .text()
-            .await()
-        Json.parseList<Issue>(jsonString)
     }
 }
 
 @UnstableDefault
 @OptIn(ImplicitReflectionSerializer::class)
-fun RBuilder.issueList(handler: RProps.() -> Unit): ReactElement {
+fun RBuilder.issueList(handler: IssueListProps.() -> Unit): ReactElement {
     return child(IssueList::class) {
         this.attrs(handler)
     }
 }
 
-external interface IssueListState : RState {
+external interface IssueListProps: RProps {
     var issues: List<Issue>
 }
