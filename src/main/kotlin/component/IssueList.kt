@@ -20,6 +20,8 @@ import kotlin.browser.window
 @OptIn(ImplicitReflectionSerializer::class)
 class IssueList : RComponent<RProps, IssueListState>() {
     override fun IssueListState.init() {
+        issues = listOf()
+
         val mainScope = MainScope()
         mainScope.launch {
             val issues = fetchIssues()
@@ -30,7 +32,7 @@ class IssueList : RComponent<RProps, IssueListState>() {
     }
 
     override fun RBuilder.render() {
-        state.issues?.forEach { issue ->
+        state.issues.forEach { issue ->
             div {
                 +issue.title
             }
@@ -59,5 +61,5 @@ fun RBuilder.issueList(handler: RProps.() -> Unit): ReactElement {
 }
 
 external interface IssueListState : RState {
-    var issues: List<Issue>?
+    var issues: List<Issue>
 }
