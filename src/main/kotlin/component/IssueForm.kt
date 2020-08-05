@@ -5,6 +5,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.await
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.css.*
 import kotlinx.html.FormMethod
 import kotlinx.html.InputType
 import kotlinx.html.js.onChangeFunction
@@ -23,6 +24,9 @@ import org.w3c.fetch.RequestInit
 import org.w3c.fetch.RequestMode
 import react.*
 import react.dom.*
+import styled.css
+import styled.styledInput
+import styled.styledTextArea
 import kotlin.browser.window
 import kotlin.js.json
 
@@ -60,18 +64,19 @@ class IssueForm : RComponent<IssueProps, IssueFormState>() {
             }
             fieldSet(classes = "pure-group") {
                 div {
-                    label {
-                        +"Title:"
-                        input(type = InputType.text, name = "title") {
-                            attrs {
-                                value = state.title
-                                placeholder = "enter issue's title"
-                                onChangeFunction = { event ->
-                                    val target = event.target as HTMLInputElement
-                                    val value = target.value
-                                    setState {
-                                        title = value
-                                    }
+                    styledInput(type = InputType.text, name = "title") {
+                        css {
+                            width = LinearDimension("400px")
+                            boxSizing = BoxSizing.borderBox
+                        }
+                        attrs {
+                            value = state.title
+                            placeholder = "Title"
+                            onChangeFunction = { event ->
+                                val target = event.target as HTMLInputElement
+                                val value = target.value
+                                setState {
+                                    title = value
                                 }
                             }
                         }
@@ -79,19 +84,35 @@ class IssueForm : RComponent<IssueProps, IssueFormState>() {
                 }
 
                 div {
-                    label {
-                        +"Description:"
-                        textArea {
-                            attrs {
-                                value = state.description
-                                name = "description"
-                                placeholder = "enter issue's description"
-                                onChangeFunction = { event ->
-                                    val target = event.target as HTMLTextAreaElement
-                                    val value = target.value
-                                    setState {
-                                        description = value
-                                    }
+                    styledInput(type = InputType.text, name = "labels") {
+                        css {
+                            width = LinearDimension("400px")
+                            boxSizing = BoxSizing.borderBox
+                        }
+                        attrs {
+                            placeholder = "Labels"
+                            // TODO Label入力の実装
+                        }
+                    }
+                }
+
+                div {
+                    styledTextArea {
+                        css {
+                            marginTop = LinearDimension("8px")
+                            width = LinearDimension("400px")
+                            boxSizing = BoxSizing.borderBox
+                            resize = Resize.vertical
+                        }
+                        attrs {
+                            name = "description"
+                            placeholder = "Leave a comment"
+                            value = state.description
+                            onChangeFunction = { event ->
+                                val target = event.target as HTMLTextAreaElement
+                                val value = target.value
+                                setState {
+                                    description = value
                                 }
                             }
                         }
@@ -100,7 +121,7 @@ class IssueForm : RComponent<IssueProps, IssueFormState>() {
             }
 
             button {
-                +"Create"
+                +"Submit new Issue"
                 attrs {
                     onClickFunction = submitHandler
                 }

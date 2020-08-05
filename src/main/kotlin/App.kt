@@ -5,6 +5,8 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.await
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.css.LinearDimension
+import kotlinx.css.marginBottom
 import kotlinx.serialization.ImplicitReflectionSerializer
 import kotlinx.serialization.UnstableDefault
 import kotlinx.serialization.json.Json
@@ -14,6 +16,8 @@ import org.w3c.fetch.RequestInit
 import org.w3c.fetch.RequestMode
 import react.*
 import react.dom.div
+import styled.css
+import styled.styledDiv
 import kotlin.browser.window
 
 @ImplicitReflectionSerializer
@@ -43,18 +47,24 @@ class App : RComponent<RProps, AppState>() {
         div {
             +state.status
         }
-        issueList {
-            issues = state.issues
-        }
-        issueForm {
-            onPosted = {
-                MainScope().launch {
-                    val fetchedIssues = fetchIssues()
-                    setState {
-                        this.issues = fetchedIssues
+
+        styledDiv {
+            css {
+                marginBottom = LinearDimension("16px")
+            }
+            issueForm {
+                onPosted = {
+                    MainScope().launch {
+                        val fetchedIssues = fetchIssues()
+                        setState {
+                            this.issues = fetchedIssues
+                        }
                     }
                 }
             }
+        }
+        issueList {
+            issues = state.issues
         }
     }
 
